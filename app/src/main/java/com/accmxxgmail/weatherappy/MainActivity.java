@@ -1,9 +1,15 @@
 package com.accmxxgmail.weatherappy;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.hardware.input.InputManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,9 +22,9 @@ import com.accmxxgmail.weatherappy.service.YahooWeatherService;
 public class MainActivity extends AppCompatActivity implements WeatherServiceCallback {
 
     private ImageView weatherIconImageview;
-    private TextView temperatureTextView;
-    private TextView conditionTextView;
-    private TextView locationTextView;
+    private TextView temperatureTextView, conditionTextView, locationTextView;
+    private EditText locationEntered;
+    private Button findLocationButton;
 
     private YahooWeatherService service;
     private ProgressDialog dialog;
@@ -32,13 +38,28 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         temperatureTextView = (TextView)findViewById(R.id.temperatureTextView);
         conditionTextView = (TextView)findViewById(R.id.conditionTextView);
         locationTextView = (TextView)findViewById(R.id.locationTextView);
+        locationEntered = (EditText)findViewById(R.id.locationEnteredText);
+        findLocationButton = (Button)findViewById(R.id.locationEnteredButton);
 
-        service = new YahooWeatherService(this);
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Loading...");
-        dialog.show();
 
-        service.refreshWeather("new york");
+
+        findLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    hideKeyboard();
+                }  catch (Exception e){
+
+                }
+
+                service = new YahooWeatherService(MainActivity.this);
+                dialog = new ProgressDialog(MainActivity.this);
+                dialog.setMessage("Loading...");
+                dialog.show();
+
+                service.refreshWeather(locationEntered.getText().toString());
+            }
+        });
     }
 
     @Override
@@ -65,5 +86,13 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     public void serviceFailure(Exception exception) {
         dialog.hide();
         Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    public void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        if(view != null){
+            InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+        }
     }
 }

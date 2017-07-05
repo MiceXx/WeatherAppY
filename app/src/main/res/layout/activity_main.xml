@@ -6,12 +6,31 @@
     android:layout_height="match_parent"
     tools:context="com.accmxxgmail.weatherappy.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:id="@+id/searchLinearLayout">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter a Location"
+            android:layout_weight="4"
+            android:id="@+id/locationEnteredText"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find"
+            android:layout_weight="1"
+            android:id="@+id/locationEnteredButton"/>
+    </LinearLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/weatherIconImageView"
         android:src="@drawable/icon_na"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/searchLinearLayout"
         android:layout_centerHorizontal="true" />
 
     <TextView

@@ -14,10 +14,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by Michael on 03-Jul-2017.
- */
-
 public class YahooWeatherService {
     private  WeatherServiceCallback callback;
     private String location;
@@ -79,7 +75,7 @@ public class YahooWeatherService {
                     int count = queryResults.optInt("count");
 
                     if(count == 0){
-                        callback.serviceFailure(new LocationWeatherException("No weather information found for" + location));
+                        callback.serviceFailure(new LocationWeatherException("No weather information found for " + location));
                         return;
                     }
 
